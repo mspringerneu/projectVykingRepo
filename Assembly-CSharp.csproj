@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{452BF3FC-A8C4-FF9F-78DF-8199C069B871}</ProjectGuid>
+    <ProjectGuid>{B08D6785-72CE-F01D-5151-A9AFB581E3F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -50,7 +50,7 @@
      <Compile Include="Assets\scripts\ManaBarScript.cs" />
      <Compile Include="Assets\scripts\MeshGenerator.cs" />
      <Compile Include="Assets\scripts\PlayerController.cs" />
-     <Compile Include="Assets\scripts\ProcWorldScript.cs" />
+     <Compile Include="Assets\scripts\ProceduralWorldGenerator.cs" />
      <Compile Include="Assets\scripts\StaminaBarScript.cs" />
      <Compile Include="Assets\scripts\Stat.cs" />
      <None Include="Assets\shaders\deckshader.shader" />
