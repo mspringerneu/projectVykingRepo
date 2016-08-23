@@ -8,6 +8,8 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	public int width;
 	public int height;
 
+	public int connectionRadius = 1;
+
 	public string seed;
 	public bool useRandomSeed;
 
@@ -159,6 +161,78 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB) {
 		Room.ConnectRooms (roomA, roomB);
 		Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 100);
+
+		List<Coord> line = GetLine (tileA, tileB);
+		foreach (Coord tile in line) {
+			DrawCircle (tile);
+		}
+	}
+
+	void DrawCircle(Coord c) {
+		for (int x = -connectionRadius; x <= connectionRadius; x++) {
+			for (int y = -connectionRadius; y <= connectionRadius; y++) {
+				if (x*x + y*y <= connectionRadius*connectionRadius) {
+					int drawX = c.tileX + x;
+					int drawY = c.tileY + y;
+					if (IsInMapRange(drawX, drawY)) {
+						map[drawX, drawY] = 0;
+					}
+				}
+			}
+		}
+	}
+
+	List<Coord> GetLine(Coord from, Coord to) {
+		List<Coord> line = new List<Coord> ();
+
+		int x = from.tileX;
+		int y = from.tileY;
+
+		int dx = to.tileX - x;
+		int dy = to.tileY - y;
+
+		bool inverted = false;
+		int step = Math.Sign (dx);
+		int gradientStep = Math.Sign (dy);
+
+		int longest = Math.Abs (dx);
+		int shortest = Math.Abs (dy);
+
+		if (longest < shortest) {
+			inverted = true;
+			longest = Math.Abs (dy);
+			shortest = Math.Abs (dx);
+
+			step = Math.Sign (dy);
+			gradientStep = Math.Sign (dx);
+		}
+
+		int gradientAcc = longest / 2;
+
+		for (int i = 0; i < longest; i++) {
+			line.Add (new Coord (x, y));
+
+			if (inverted) {
+				y += step;
+			}
+			else {
+				x += step;
+			}
+
+			gradientAcc += shortest;
+
+			if (gradientAcc >= longest) {
+				if (inverted) {
+					x += gradientStep;
+				}
+				else {
+					y += gradientStep;
+				}
+				gradientAcc -= longest;
+			}
+		}
+
+		return line;
 	}
 	
 	Vector3 CoordToWorldPoint (Coord tile) {
@@ -219,8 +293,9 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	void RandomFillMap() { 
 		if (useRandomSeed) {
 			seed = DateTime.Now.TimeOfDay.ToString();
-			print (seed);
 		}
+
+		print ("The current seed is: '" + seed + "'");
 
 		System.Random pseudoRandom = new System.Random(seed.GetHashCode());
 
