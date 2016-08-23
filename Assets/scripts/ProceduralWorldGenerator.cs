@@ -90,13 +90,15 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		Room bestRoomA = new Room();
 		Room bestRoomB = new Room();
 		bool possibleConnectionFound = false;
+
 		foreach (Room roomA in allRooms) {
 			possibleConnectionFound = false;
+
 			foreach (Room roomB in allRooms) {
 				if (roomA == roomB) {
 					continue;
 				}
-				if (roomA.IsConnected) {
+				if (roomA.IsConnected(roomB)) {
 					possibleConnectionFound = false;
 					break;
 				}
@@ -104,7 +106,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 					for (int tileIndexB = 0; tileIndexB <= roomB.edgeTiles.Count; tileIndexB++) {
 						Coord tileA = roomA.edgeTiles[tileIndexA];
 						Coord tileB = roomB.edgeTiles[tileIndexB];
-						int distanceBetweenRooms = (int)(Mathf.power(tileA.x - tileB.x, 2) + Mathf.power(tileA.y - tileB.y, 2));
+						int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
 						
 						if (distanceBetweenRooms < bestDistance || !possibleConnectionFound) {
 							bestDistance = distanceBetweenRooms;
@@ -124,13 +126,13 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		}
 	}
 	
-	void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord, tileB) {
+	void CreatePassage(Room roomA, Room roomB, Coord tileA, Coord tileB) {
 		Room.ConnectRooms (roomA, roomB);
 		Debug.DrawLine(CoordToWorldPoint(tileA), CoordToWorldPoint(tileB), Color.green, 100);
 	}
 	
-	Vector3 CoorToWorldPoint (Coord tile) {
-		return new Vector3(-width/2 + .5f + tile.tileX, 2, -height/2 + .5f + tile.tileY,);
+	Vector3 CoordToWorldPoint (Coord tile) {
+		return new Vector3(-width/2 + .5f + tile.tileX, 2, -height/2 + .5f + tile.tileY);
 	}
 
 	List<List<Coord>> GetRegions (int tileType) {
@@ -251,7 +253,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	class Room {
 		public List<Coord> tiles;
 		public List<Coord> edgeTiles;
-		public List<Rooms> connectedRooms;
+		public List<Room> connectedRooms;
 		public int roomSize;
 		
 		public Room() {
@@ -261,13 +263,13 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		public Room(List<Coord> roomTiles, int[,] map) {
 			tiles = roomTiles;
 			roomSize = tiles.Count;
-			connectedRooms = new List<Coord>();
-			
+			connectedRooms = new List<Room>();
+
 			edgeTiles = new List<Coord>();
 			foreach (Coord tile in tiles) {
-				for (intx = tile.tileX - 1; x <= tile.tileX+1; x++) {
-					for (intx = tile.tileX - 1; x <= tile.tileX+1; x++) {
-						if (x== tile.tileX || y == tile.tileY) {
+				for (int x = tile.tileX - 1; x <= tile.tileX+1; x++) {
+					for (int y = tile.tileY - 1; y <= tile.tileY+1; y++) {
+						if (x == tile.tileX || y == tile.tileY) {
 							if (map[x,y] == 1) {
 								edgeTiles.Add(tile);
 							}
