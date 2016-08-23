@@ -23,6 +23,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		GenerateMap ();
 	}
 
+	/*
 	void Update() {
 		if (Input.GetMouseButtonDown(0)) {
 			print ("Pressed left click.");
@@ -30,6 +31,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 			GenerateMap ();
 		}
 	}
+	*/
 
 	void GenerateMap() {
 		map = new int[width, height];
