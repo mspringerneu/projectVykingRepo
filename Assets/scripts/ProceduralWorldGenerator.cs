@@ -23,7 +23,6 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	void Update() {
 		if (Input.GetMouseButtonDown(0)) {
 			print ("Pressed left click.");
-			Debug.D
 			GenerateMap ();
 		}
 	}
@@ -81,10 +80,31 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 				}
 			}
 		}
+		survivingRooms.Sort();
+		survivingRooms [0].isMainRoom = true;
+		survivingRooms [0].isAccessibleFromMainRoom = true;
 		ConnectClosestRooms(survivingRooms);
 	}
 	
-	void ConnectClosestRooms(List<Room> allRooms) {
+	void ConnectClosestRooms(List<Room> allRooms, bool forceAccessibilityFromMainRoom = false) {
+
+		List<Room> roomListA = new List<Room> ();
+		List<Room> roomListB = new List<Room> ();
+
+		if (forceAccessibilityFromMainRoom) {
+			foreach (Room room in allRooms) {
+				if (room.isAccessibleFromMainRoom) {
+					roomListB.Add (room);
+				} else {
+					roomListA.Add (room);
+				}
+			}
+		}
+		else {
+			roomListA = allRooms;
+			roomListB = allRooms;
+		}
+
 		int bestDistance = 0;
 		Coord bestTileA = new Coord();
 		Coord bestTileB = new Coord();
@@ -92,16 +112,17 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		Room bestRoomB = new Room();
 		bool possibleConnectionFound = false;
 
-		foreach (Room roomA in allRooms) {
-			possibleConnectionFound = false;
-
-			foreach (Room roomB in allRooms) {
-				if (roomA == roomB) {
+		foreach (Room roomA in roomListA) {
+			if (!forceAccessibilityFromMainRoom) {
+				possibleConnectionFound = false;
+				if (roomA.connectedRooms.Count > 0) {
 					continue;
 				}
-				if (roomA.IsConnected(roomB)) {
-					possibleConnectionFound = false;
-					break;
+			}
+
+			foreach (Room roomB in roomListB) {
+				if (roomA == roomB || roomA.IsConnected(roomB)) {
+					continue;
 				}
 				for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++) {
 					for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++) {
@@ -121,9 +142,17 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 					}
 				}
 			}
-			if (possibleConnectionFound) {
+			if (possibleConnectionFound && !forceAccessibilityFromMainRoom) {
 				CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
 			}
+		}
+		if (possibleConnectionFound && forceAccessibilityFromMainRoom) {
+			CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
+			ConnectClosestRooms (allRooms, true);
+		} 
+
+		if (!forceAccessibilityFromMainRoom) {
+			ConnectClosestRooms (allRooms, true);
 		}
 	}
 	
@@ -251,11 +280,13 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		}
 	}
 	
-	class Room {
+	class Room : IComparable<Room>{
 		public List<Coord> tiles;
 		public List<Coord> edgeTiles;
 		public List<Room> connectedRooms;
 		public int roomSize;
+		public bool isMainRoom;
+		public bool isAccessibleFromMainRoom;
 		
 		public Room() {
 			
@@ -279,14 +310,33 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 				}
 			}
 		}
+
+		public void SetAcessibleFromMainRoom() {
+			if (!isAccessibleFromMainRoom) {
+				isAccessibleFromMainRoom = true;
+				foreach (Room connectedRoom in connectedRooms) {
+					connectedRoom.SetAcessibleFromMainRoom ();
+				}
+			}
+		}
 		
 		public static void ConnectRooms (Room roomA, Room roomB) {
+			if (roomA.isAccessibleFromMainRoom) {
+				roomB.SetAcessibleFromMainRoom ();
+			}
+			else if (roomB.isAccessibleFromMainRoom) {
+				roomA.SetAcessibleFromMainRoom ();
+			}
 			roomA.connectedRooms.Add(roomB);
 			roomB.connectedRooms.Add(roomA);
 		}
 		
 		public bool IsConnected(Room otherRoom) {
 			return connectedRooms.Contains(otherRoom);
+		}
+
+		public int CompareTo(Room otherRoom) {
+			return otherRoom.roomSize.CompareTo(roomSize);
 		}
 	}
 
