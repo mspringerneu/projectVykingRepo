@@ -15,3 +15,6 @@ Camera Script:
 
 Mini-Map Help:
     https://www.youtube.com/watch?v=ZuV9Xlt-l6g
+
+Additional Textures and Scripting Help (Enemy AI, PlayerHealth, EnemySight, etc.)
+    https://www.assetstore.unity3d.com/en/#!/content/7677

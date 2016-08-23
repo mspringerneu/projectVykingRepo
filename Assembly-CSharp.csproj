@@ -45,18 +45,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\scripts\CAMERAscripts\CameraController.cs" />
-     <Compile Include="Assets\scripts\CAMERAscripts\CameraFollowController.cs" />
-     <Compile Include="Assets\scripts\CAMERAscripts\MinimapCameraController.cs" />
-     <Compile Include="Assets\scripts\PLAYERscripts\PlayerController.cs" />
-     <Compile Include="Assets\scripts\PLAYERscripts\TestPlayerController.cs" />
-     <Compile Include="Assets\scripts\PLAYERscripts\TestPlayerController2D.cs" />
-     <Compile Include="Assets\scripts\PROCEDURALscripts\MeshGenerator.cs" />
-     <Compile Include="Assets\scripts\PROCEDURALscripts\ProceduralWorldGenerator.cs" />
+     <Compile Include="Assets\HashIDs.cs" />
+     <Compile Include="Assets\SceneFadeInOut.cs" />
      <Compile Include="Assets\scripts\Stat.cs" />
-     <Compile Include="Assets\scripts\UIscripts\HealthBarScript.cs" />
-     <Compile Include="Assets\scripts\UIscripts\ManaBarScript.cs" />
-     <Compile Include="Assets\scripts\UIscripts\StaminaBarScript.cs" />
+     <Compile Include="Assets\scripts\Tags.cs" />
+     <Compile Include="Assets\scripts\camera\MainCameraController.cs" />
+     <Compile Include="Assets\scripts\camera\MinimapCameraController.cs" />
+     <Compile Include="Assets\scripts\enemy\EnemyAI.cs" />
+     <Compile Include="Assets\scripts\enemy\EnemySight.cs" />
+     <Compile Include="Assets\scripts\gameController\LastPlayerSighting.cs" />
+     <Compile Include="Assets\scripts\player\PlayerController.cs" />
+     <Compile Include="Assets\scripts\player\PlayerHealth.cs" />
+     <Compile Include="Assets\scripts\player\TestPlayerController.cs" />
+     <Compile Include="Assets\scripts\player\TestPlayerController2D.cs" />
+     <Compile Include="Assets\scripts\ui\HealthBarScript.cs" />
+     <Compile Include="Assets\scripts\ui\ManaBarScript.cs" />
+     <Compile Include="Assets\scripts\ui\StaminaBarScript.cs" />
+     <Compile Include="Assets\scripts\world\MeshGenerator.cs" />
+     <Compile Include="Assets\scripts\world\ProceduralWorldGenerator.cs" />
      <None Include="Assets\shaders\deckshader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
