@@ -8,7 +8,8 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	public int width;
 	public int height;
 
-	public int connectionRadius = 1;
+	public int connectionRadius;
+	public int borderSize;
 
 	public string seed;
 	public bool useRandomSeed;
@@ -25,6 +26,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	void Update() {
 		if (Input.GetMouseButtonDown(0)) {
 			print ("Pressed left click.");
+			useRandomSeed = true;
 			GenerateMap ();
 		}
 	}
@@ -33,13 +35,18 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		map = new int[width, height];
 		RandomFillMap();
 
-		for (int i = 0; i < 5; i++) {
+		//ProcessMap ();
+
+		for (int i = 0; i < 3; i++) {
 			SmoothMap ();
 		}
 
 		ProcessMap ();
 
-		int borderSize = 5;
+		for (int i = 0; i < 2; i++) {
+			SmoothMap ();
+		}
+
 		int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
 
 		for (int x = 0; x < borderedMap.GetLength (0); x++) {
