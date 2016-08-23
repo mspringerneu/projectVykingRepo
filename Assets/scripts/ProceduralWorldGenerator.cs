@@ -23,6 +23,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 	void Update() {
 		if (Input.GetMouseButtonDown(0)) {
 			print ("Pressed left click.");
+			Debug.D
 			GenerateMap ();
 		}
 	}
@@ -52,7 +53,7 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 		}
 
 		MeshGenerator meshGen = GetComponent<MeshGenerator> ();
-		meshGen.GenerateMesh (map, 1);
+		meshGen.GenerateMesh (borderedMap, 1);
 	}
 
 	void ProcessMap () {
@@ -102,8 +103,8 @@ public class ProceduralWorldGenerator : MonoBehaviour {
 					possibleConnectionFound = false;
 					break;
 				}
-				for (int tileIndexA = 0; tileIndexA <= roomA.edgeTiles.Count; tileIndexA++) {
-					for (int tileIndexB = 0; tileIndexB <= roomB.edgeTiles.Count; tileIndexB++) {
+				for (int tileIndexA = 0; tileIndexA < roomA.edgeTiles.Count; tileIndexA++) {
+					for (int tileIndexB = 0; tileIndexB < roomB.edgeTiles.Count; tileIndexB++) {
 						Coord tileA = roomA.edgeTiles[tileIndexA];
 						Coord tileB = roomB.edgeTiles[tileIndexB];
 						int distanceBetweenRooms = (int)(Mathf.Pow(tileA.tileX - tileB.tileX, 2) + Mathf.Pow(tileA.tileY - tileB.tileY, 2));
