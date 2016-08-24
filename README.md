@@ -18,3 +18,6 @@ Mini-Map Help:
 
 Additional Textures and Scripting Help (Enemy AI, PlayerHealth, EnemySight, etc.)
     https://www.assetstore.unity3d.com/en/#!/content/7677
+
+Viking Village Assets:
+    https://www.assetstore.unity3d.com/en/#!/content/29140
