@@ -11,4 +11,5 @@ public class Tags : MonoBehaviour {
 	public const string siren = "Siren";
 	public const string alarmLight = "AlarmLight";
 	public const string fader = "Fader";
+	public const string minimapCamera = "MinimapCamera";
 }

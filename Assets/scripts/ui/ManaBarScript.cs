@@ -7,29 +7,37 @@ public class ManaBarScript : MonoBehaviour {
 	private float barTransform;
 	[SerializeField]
 	private Image content;
-	private float mana = 120;
+	//private float mana = 120f;
 
-	public GameObject player;
-	private float playermana = 120; //player.GetComponent<PlayerController>().mana;
+	//public GameObject player;
+	private float manaBarWidth = 150f;
+	private Vector3 initialPos;
+	private Vector3 deltaPos;
+	private PlayerMana playerMana;
+	private float maxMana;
+	public float currentMana;
 	public Canvas canvas;
 	// Use this for initialization
 	void Start () {
-
+		initialPos = content.transform.position;
+		playerMana = GameObject.FindWithTag (Tags.player).GetComponent<PlayerMana> ();
+		maxMana = playerMana.maxMana;
+		currentMana = maxMana;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		float newMana = player.GetComponent<PlayerController> ().mana;
-		if (newMana > 0) {
-			float deltaM = mana - player.GetComponent<PlayerController> ().mana;
-			if (deltaM > 0) {
-				mana = newMana;
-				handleBar (deltaM);
-			}
+		currentMana = playerMana.GetPlayerMana ();
+		if (currentMana != maxMana) {
+			deltaPos = new Vector3 (-GetXOffset (), 0, 0);
+			content.transform.position = initialPos + deltaPos;
+		}
+		else {
+			content.transform.position = initialPos;
 		}
 	}
 
-	private void handleBar(float offset) {
-		content.rectTransform.Translate (new Vector3 (-offset*2, 0, 0));
+	private float GetXOffset () {
+		return (maxMana - currentMana) * (maxMana / manaBarWidth);
 	}
 }

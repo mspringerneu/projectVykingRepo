@@ -7,30 +7,37 @@ public class StaminaBarScript : MonoBehaviour {
 	private float barTransform;
 	[SerializeField]
 	private Image content;
-	private float stam = 120;
+	//private float stamina = 120f;
 
-	public GameObject player;
-	private float playerstam = 120; //player.GetComponent<PlayerController>().mana;
+	//public GameObject player;
+	private float staminaBarWidth = 150f;
+	private Vector3 initialPos;
+	private Vector3 deltaPos;
+	private PlayerStamina playerStamina;
+	private float maxStamina;
+	public float currentStamina;
 	public Canvas canvas;
 	// Use this for initialization
 	void Start () {
-
+		initialPos = content.transform.position;
+		playerStamina = GameObject.FindWithTag (Tags.player).GetComponent<PlayerStamina> ();
+		maxStamina = playerStamina.maxStamina;
+		currentStamina = maxStamina;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		float newStam = player.GetComponent<PlayerController>().stamina;
-		if (newStam > 0) {
-			float deltaS = stam - player.GetComponent<PlayerController> ().stamina;
-			if (deltaS > 0) {
-				stam = newStam;
-				handleBar (deltaS);
-			}
+		currentStamina = playerStamina.GetPlayerStamina ();
+		if (currentStamina != maxStamina) {
+			deltaPos = new Vector3 (-GetXOffset (), 0, 0);
+			content.transform.position = initialPos + deltaPos;
+		}
+		else {
+			content.transform.position = initialPos;
 		}
 	}
 
-	private void handleBar(float offset) {
-		content.rectTransform.Translate (new Vector3 (-offset*2, 0, 0));
+	private float GetXOffset () {
+		return (maxStamina - currentStamina) * (maxStamina / staminaBarWidth);
 	}
 }
-
