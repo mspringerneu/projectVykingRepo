@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scenes/TreasureCave.unity
+- path: Assets/scenes/projectvykingprocedural2D.unity
   isLoaded: 1
   isActive: 1

@@ -19,11 +19,11 @@ public class EnemyAI : MonoBehaviour {
 	private int wayPointIndex;
 
 	void Awake() {
-		enemySight = GetComponent<EnemySight> ();
+		enemySight = GetComponent<enemySight> ();
 		nav = GetComponent<NavMeshAgent> ();
-		player = GameObject.FindWithTag (Tags.player).transform;
-		playerHealth = player.GetComponent<PlayerHealth> ();
-		lastPlayerSighting = GameObject.FindWithTag (Tags.gameController).GetComponent<LastPlayerSighting> ();
+		player = GameObject.FindGameObjectWithTag (Tags.player).transform;
+		playerHealth = player.GetComponent<playerHealth> ();
+		lastPlayerSighting = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent<lastPlayerSighting> ();
 	}
 
 	void Update() {

@@ -11,7 +11,7 @@ public class LastPlayerSighting : MonoBehaviour
 	public float musicFadeSpeed = 1f;                                   // The speed at which the 
 
 
-	private AlarmLight alarm;                                           // Reference to the AlarmLight script.
+	//private AlarmLight alarm;                                           // Reference to the AlarmLight script.
 	private Light mainLight;                                            // Reference to the main light.
 	private AudioSource panicAudio;                                     // Reference to the AudioSource of the panic msuic.
 	private AudioSource[] sirens;                                       // Reference to the AudioSources of the megaphones.
@@ -20,13 +20,13 @@ public class LastPlayerSighting : MonoBehaviour
 	void Awake ()
 	{
 		// Setup the reference to the alarm light.
-		alarm = GameObject.FindWithTag(Tags.alarm).GetComponent<AlarmLight>();
+		//alarm = GameObject.FindGameObjectWithTag(Tags.alarm).GetComponent<AlarmLight>();
 
 		// Setup the reference to the main directional light in the scene.
-		//mainLight = GameObject.FindWithTag(Tags.mainLight).GetComponent<Light>();
+		mainLight = GameObject.FindGameObjectWithTag(Tags.mainLight).light;
 
 		// Setup the reference to the additonal audio source.
-		panicAudio = transform.Find("secondaryMusic").GetComponent<AudioSource>();
+		panicAudio = transform.Find("secondaryMusic").audio;
 
 		// Find an array of the siren gameobjects.
 		GameObject[] sirenGameObjects = GameObject.FindGameObjectsWithTag(Tags.siren);
@@ -37,7 +37,7 @@ public class LastPlayerSighting : MonoBehaviour
 		// For all the sirens allocate the audio source of the gameobjects.
 		for(int i = 0; i < sirens.Length; i++)
 		{
-			sirens[i] = sirenGameObjects[i].GetComponent<AudioSource>();
+			sirens[i] = sirenGameObjects[i].audio;
 		}
 	}
 
@@ -67,7 +67,7 @@ public class LastPlayerSighting : MonoBehaviour
 			newIntensity = lightHighIntensity;
 
 		// Fade the directional light's intensity in or out.
-		// mainLight.intensity = Mathf.Lerp(mainLight.intensity, newIntensity, fadeSpeed * Time.deltaTime);
+		mainLight.intensity = Mathf.Lerp(mainLight.intensity, newIntensity, fadeSpeed * Time.deltaTime);
 
 		// For all of the sirens...
 		for(int i = 0; i < sirens.Length; i++)
@@ -88,7 +88,7 @@ public class LastPlayerSighting : MonoBehaviour
 		if(position != resetPosition)
 		{
 			// ... fade out the normal music...
-			GetComponent<AudioSource>().volume = Mathf.Lerp(GetComponent<AudioSource>().volume, 0f, musicFadeSpeed * Time.deltaTime);
+			audio.volume = Mathf.Lerp(audio.volume, 0f, musicFadeSpeed * Time.deltaTime);
 
 			// ... and fade in the panic music.
 			panicAudio.volume = Mathf.Lerp(panicAudio.volume, 0.8f, musicFadeSpeed * Time.deltaTime);
@@ -96,7 +96,7 @@ public class LastPlayerSighting : MonoBehaviour
 		else
 		{
 			// Otherwise fade in the normal music and fade out the panic music.
-			GetComponent<AudioSource>().volume = Mathf.Lerp(GetComponent<AudioSource>().volume, 0.8f, musicFadeSpeed * Time.deltaTime);
+			audio.volume = Mathf.Lerp(audio.volume, 0.8f, musicFadeSpeed * Time.deltaTime);
 			panicAudio.volume = Mathf.Lerp(panicAudio.volume, 0f, musicFadeSpeed * Time.deltaTime);
 		}
 	}
