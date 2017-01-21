@@ -9,4 +9,8 @@ public class SceneFadeInOut : MonoBehaviour {
 	void Awake() {
 		
 	}
+
+	public void EndScene() {
+		
+	}
 }

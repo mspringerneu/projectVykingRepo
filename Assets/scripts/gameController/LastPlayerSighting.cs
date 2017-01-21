@@ -23,10 +23,10 @@ public class LastPlayerSighting : MonoBehaviour
 		//alarm = GameObject.FindGameObjectWithTag(Tags.alarm).GetComponent<AlarmLight>();
 
 		// Setup the reference to the main directional light in the scene.
-		mainLight = GameObject.FindGameObjectWithTag(Tags.mainLight).light;
+		mainLight = GameObject.FindGameObjectWithTag(Tags.mainLight).GetComponent<Light>();
 
 		// Setup the reference to the additonal audio source.
-		panicAudio = transform.Find("secondaryMusic").audio;
+		panicAudio = transform.Find("secondaryMusic").GetComponent<AudioSource>();
 
 		// Find an array of the siren gameobjects.
 		GameObject[] sirenGameObjects = GameObject.FindGameObjectsWithTag(Tags.siren);
@@ -37,7 +37,7 @@ public class LastPlayerSighting : MonoBehaviour
 		// For all the sirens allocate the audio source of the gameobjects.
 		for(int i = 0; i < sirens.Length; i++)
 		{
-			sirens[i] = sirenGameObjects[i].audio;
+			sirens[i] = sirenGameObjects[i].GetComponent<AudioSource>();
 		}
 	}
 
@@ -45,7 +45,7 @@ public class LastPlayerSighting : MonoBehaviour
 	void Update ()
 	{
 		// Switch the alarms and fade the music.
-		SwitchAlarms();
+		//SwitchAlarms();
 		MusicFading();
 	}
 
@@ -53,7 +53,7 @@ public class LastPlayerSighting : MonoBehaviour
 	void SwitchAlarms ()
 	{
 		// Set the alarm light to be on or off.
-		alarm.alarmOn = position != resetPosition;
+		// alarm.alarmOn = position != resetPosition;
 
 		// Create a new intensity.
 		float newIntensity;
@@ -88,7 +88,7 @@ public class LastPlayerSighting : MonoBehaviour
 		if(position != resetPosition)
 		{
 			// ... fade out the normal music...
-			audio.volume = Mathf.Lerp(audio.volume, 0f, musicFadeSpeed * Time.deltaTime);
+			GetComponent<AudioSource>().volume = Mathf.Lerp(GetComponent<AudioSource>().volume, 0f, musicFadeSpeed * Time.deltaTime);
 
 			// ... and fade in the panic music.
 			panicAudio.volume = Mathf.Lerp(panicAudio.volume, 0.8f, musicFadeSpeed * Time.deltaTime);
@@ -96,7 +96,7 @@ public class LastPlayerSighting : MonoBehaviour
 		else
 		{
 			// Otherwise fade in the normal music and fade out the panic music.
-			audio.volume = Mathf.Lerp(audio.volume, 0.8f, musicFadeSpeed * Time.deltaTime);
+			GetComponent<AudioSource>().volume = Mathf.Lerp(GetComponent<AudioSource>().volume, 0.8f, musicFadeSpeed * Time.deltaTime);
 			panicAudio.volume = Mathf.Lerp(panicAudio.volume, 0f, musicFadeSpeed * Time.deltaTime);
 		}
 	}

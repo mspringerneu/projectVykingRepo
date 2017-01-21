@@ -10,7 +10,7 @@ public class EnemyAI : MonoBehaviour {
 	public Transform[] patrolWayPoints;
 
 	private EnemySight enemySight;
-	private NavMeshAgent nav;
+	private UnityEngine.AI.NavMeshAgent nav;
 	private Transform player;
 	private PlayerHealth playerHealth;
 	private LastPlayerSighting lastPlayerSighting;
@@ -19,14 +19,15 @@ public class EnemyAI : MonoBehaviour {
 	private int wayPointIndex;
 
 	void Awake() {
-		enemySight = GetComponent<enemySight> ();
-		nav = GetComponent<NavMeshAgent> ();
+		enemySight = GetComponent<EnemySight> ();
+		nav = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		player = GameObject.FindGameObjectWithTag (Tags.player).transform;
-		playerHealth = player.GetComponent<playerHealth> ();
-		lastPlayerSighting = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent<lastPlayerSighting> ();
+		playerHealth = player.GetComponent<PlayerHealth> ();
+		lastPlayerSighting = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent<LastPlayerSighting> ();
 	}
 
 	void Update() {
+		/*
 		if (enemySight.playerInSight && playerHealth.health > 0f) {
 			Attacking ();
 		}
@@ -36,6 +37,7 @@ public class EnemyAI : MonoBehaviour {
 		else {
 			Patrolling ();
 		}
+		*/
 	}
 
 	void Attacking () {

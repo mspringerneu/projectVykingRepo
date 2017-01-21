@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Timers;
 
 public class StaminaBarScript : MonoBehaviour {
 	[SerializeField]

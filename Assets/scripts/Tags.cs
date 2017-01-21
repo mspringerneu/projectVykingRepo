@@ -11,4 +11,9 @@ public class Tags : MonoBehaviour {
 	public const string siren = "Siren";
 	public const string alarmLight = "AlarmLight";
 	public const string fader = "Fader";
+	public const string canvas = "Canvas";
+	public const string hud = "HUD";
+	public const string healthBar = "HealthBar";
+	public const string staminaBar = "StaminaBar";
+	public const string manaBar = "ManaBar";
 }

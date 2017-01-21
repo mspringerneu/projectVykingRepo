@@ -8,13 +8,16 @@ public class HealthBarScript : MonoBehaviour {
 	[SerializeField]
 	private Image content;
 	private float health = 150;
+	private float hbWidth;
 
 	public GameObject player;
-	private float playerhealth = 150; //player.GetComponent<PlayerController>().health;
+	private float playerHealth; //player.GetComponent<PlayerController>().health;
 	public Canvas canvas;
 	// Use this for initialization
 	void Start () {
-	
+		player = GameObject.FindGameObjectWithTag (Tags.player);
+		playerHealth = player.GetComponent<PlayerHealth> ().health;
+		print (content.name.ToString());
 	}
 	
 	// Update is called once per frame
@@ -27,6 +30,10 @@ public class HealthBarScript : MonoBehaviour {
 				handleBar (deltaH);
 			}
 		}
+	}
+
+	public float getHealth() {
+		return health;
 	}
 
 	private void handleBar(float offset) {
