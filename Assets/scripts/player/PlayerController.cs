@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	private PlayerStamina pStamina;
 	private PlayerMana pMana;
 	private SpriteRenderer spriteRenderer;
+	private BoxCollider2D boxColl;
 	private float rotation;
 
 	[SerializeField]
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
 		pHealth = GetComponent<PlayerHealth> ();
 		pStamina = GetComponent<PlayerStamina> ();
 		pMana = GetComponent<PlayerMana> ();
+		boxColl = GetComponent<BoxCollider2D> ();
 	}
 
 	// Update is called once per frame
@@ -133,7 +135,7 @@ public class PlayerController : MonoBehaviour
 			combatMove ("dvswing");
 			//anim.SetBool ("isCombat", true);
 			//anim.SetTrigger ("DblVertSwTrig");
-			health -= 15;
+			pHealth.TakeDamage(0.1f);
 			//anim.SetBool ("isCombat", false);
 			//anim.SetBool ("isDblVertSwing", true);
 			//anim.SetBool ("isDblVertSwing", false);
@@ -222,6 +224,18 @@ public class PlayerController : MonoBehaviour
 			break;
 		default:
 			break;
+		}
+	}
+
+	void OnTriggerEnter2D (Collider2D coll) {
+		print ("Triggered by collider of type: " + coll.GetType ().ToString ());
+		if (coll.gameObject.CompareTag(Tags.swordEnemy) || coll.gameObject.CompareTag(Tags.axeEnemy)) {
+		}
+	}
+
+	void OnCollisionEnter2D (Collision2D coll) {
+		print ("Collision with collider of type: " + coll.GetType ().ToString ());
+		if (coll.gameObject.CompareTag(Tags.swordEnemy) || coll.gameObject.CompareTag(Tags.axeEnemy)) {
 		}
 	}
 }

@@ -16,4 +16,6 @@ public class Tags : MonoBehaviour {
 	public const string healthBar = "HealthBar";
 	public const string staminaBar = "StaminaBar";
 	public const string manaBar = "ManaBar";
+	public const string swordEnemy = "SwordEnemy";
+	public const string axeEnemy = "AxeEnemy";
 }

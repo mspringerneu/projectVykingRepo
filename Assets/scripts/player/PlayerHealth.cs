@@ -3,8 +3,17 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour {
 
-	public float health = 100f;
+	private float maxHealth = 200f;
+	public float currentHealth;
+
 	public float resetAfterDeathTime = 5f;
+
+	[SerializeField]
+	private bool enableRegen;
+	public float regenTimeout;
+	public float regenTimer;
+	public float regenIncrement;
+
 	public AudioClip deathClip;
 
 	private Animator anim;
@@ -17,6 +26,10 @@ public class PlayerHealth : MonoBehaviour {
 	private bool playerDead;
 
 	void Awake() {
+		currentHealth = maxHealth;
+		regenTimeout = 3.0f;
+		regenTimer = 0f;
+		regenIncrement = 1f;
 		anim = GetComponent<Animator> ();
 		healthBarScript = GameObject.FindGameObjectWithTag (Tags.hud).GetComponentInChildren<HealthBarScript> ();
 		playerController = GetComponent<PlayerController> ();
@@ -26,14 +39,27 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	void Update() {
-		if(healthBarScript.getHealth() <= 0) {
+		// if dying or dead
+		if(currentHealth <= 0) {
 			if (!playerDead) {
 				PlayerDying ();
+			} 
+			else {
+				PlayerDead ();
+				LevelReset ();
 			}
-			else {}
-			PlayerDead ();
-			LevelReset ();
 		}
+		// if you are not at full health
+		else if (currentHealth < maxHealth && enableRegen) {
+			regenTimer += Time.deltaTime;
+			if (regenTimer >= regenTimeout) {
+				currentHealth += regenIncrement;
+			}
+		}
+	}
+
+	void ResetRegenTimer() {
+		regenTimer = 0f;
 	}
 
 	void PlayerDying() {
@@ -43,7 +69,7 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	void PlayerDead () {
-		if (anim.GetCurrentAnimatorStateInfo(0).nameHash == hash.dyingState) {
+		if (anim.GetCurrentAnimatorStateInfo(0).fullPathHash == hash.dyingState) {
 			anim.SetBool (hash.deadBool, false);
 		}
 
@@ -61,7 +87,16 @@ public class PlayerHealth : MonoBehaviour {
 		}
 	}
 
+	public float GetMaxHealth() {
+		return maxHealth;
+	}
+
+	public float GetCurrentHealth() {
+		return currentHealth;
+	}
+
 	public void TakeDamage(float pctDamage) {
-		
+		currentHealth -= (maxHealth * pctDamage);
+		ResetRegenTimer ();
 	}
 }

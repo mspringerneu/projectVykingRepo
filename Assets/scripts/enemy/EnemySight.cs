@@ -35,7 +35,7 @@ public class EnemySight : MonoBehaviour {
 
 		previousSighting = lastPlayerSighting.position;
 
-		if (playerHealth.health > 0f) {
+		if (playerHealth.GetCurrentHealth() > 0f) {
 			anim.SetBool (hash.playerInSightBool, playerInSight);
 		}
 		else {

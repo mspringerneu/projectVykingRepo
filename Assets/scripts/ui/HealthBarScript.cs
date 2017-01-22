@@ -7,36 +7,38 @@ public class HealthBarScript : MonoBehaviour {
 	private float barTransform;
 	[SerializeField]
 	private Image content;
-	private float health = 150;
-	private float hbWidth;
+	private float hbWidth = 150f;
+	// ensures that the script works if maxHealth changes
+	private float scalar;
 
 	public GameObject player;
+	private float maxHealth;
 	private float playerHealth; //player.GetComponent<PlayerController>().health;
 	public Canvas canvas;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag (Tags.player);
-		playerHealth = player.GetComponent<PlayerHealth> ().health;
-		print (content.name.ToString());
+		maxHealth = player.GetComponent<PlayerHealth> ().GetMaxHealth();
+		playerHealth = maxHealth;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		float newHealth = player.GetComponent<PlayerController> ().health;
-		if (newHealth > 0) {
-			float deltaH = health - player.GetComponent<PlayerController> ().health;
-			if (deltaH > 0) {
-				health = newHealth;
-				handleBar (deltaH);
+		playerHealth = player.GetComponent<PlayerHealth> ().GetCurrentHealth();
+		if (playerHealth > 0) {
+			// define deltaH proportionally to maxHealth and hbWidth
+			scalar = playerHealth / maxHealth;
+			print ("Scalar: " + scalar.ToString ());
+			if (scalar != 1) {
+				handleBar (scalar);
 			}
 		}
 	}
 
-	public float getHealth() {
-		return health;
-	}
-
-	private void handleBar(float offset) {
-		content.rectTransform.Translate (new Vector3 (-offset*2, 0, 0));
+	private void handleBar(float scalar) {
+		
+		content.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scalar * hbWidth);
+		//content.rectTransform.Translate (new Vector3 (-offset, 0, 0));
 	}
 }
