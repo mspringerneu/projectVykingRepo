@@ -39,18 +39,8 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	void Update() {
-		// if dying or dead
-		if(currentHealth <= 0) {
-			if (!playerDead) {
-				PlayerDying ();
-			} 
-			else {
-				PlayerDead ();
-				LevelReset ();
-			}
-		}
-		// if you are not at full health
-		else if (currentHealth < maxHealth && enableRegen) {
+
+		if (currentHealth < maxHealth && enableRegen) {
 			regenTimer += Time.deltaTime;
 			if (regenTimer >= regenTimeout) {
 				currentHealth += regenIncrement;
@@ -95,8 +85,35 @@ public class PlayerHealth : MonoBehaviour {
 		return currentHealth;
 	}
 
-	public void TakeDamage(float pctDamage) {
-		currentHealth -= (maxHealth * pctDamage);
-		ResetRegenTimer ();
+	// returns true if the damage kills the player (for use with animator)
+	public bool TakeDamage(float hitPts) {
+		bool killingBlow = false;
+		currentHealth -= hitPts;
+		if (currentHealth <= hitPts) {
+			currentHealth = 0f;
+			if (!playerDead) {
+				PlayerDying ();
+				killingBlow = true;
+			} 
+			else {
+				PlayerDead ();
+				LevelReset ();
+			}
+		} 
+		else  {
+			currentHealth -= hitPts;
+			ResetRegenTimer ();
+		}
+		return killingBlow;
+	}
+
+	public void Heal(float hitPts) {
+		float currentDamage = maxHealth - currentHealth;
+		if (currentDamage < hitPts) {
+			currentHealth = maxHealth;
+		}
+		else {
+			currentHealth += hitPts;
+		}
 	}
 }

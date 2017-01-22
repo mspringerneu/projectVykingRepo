@@ -4,31 +4,28 @@ using UnityEngine.UI;
 
 public class HealthBarScript : MonoBehaviour {
 	[SerializeField]
-	private float barTransform;
-	[SerializeField]
 	private Image content;
 	private float hbWidth = 150f;
 	// ensures that the script works if maxHealth changes
 	private float scalar;
 
-	public GameObject player;
+	private PlayerHealth playerHealth;
 	private float maxHealth;
-	private float playerHealth; //player.GetComponent<PlayerController>().health;
-	public Canvas canvas;
+	private float currentHealth;
 	// Use this for initialization
 	void Start () {
-		player = GameObject.FindGameObjectWithTag (Tags.player);
-		maxHealth = player.GetComponent<PlayerHealth> ().GetMaxHealth();
-		playerHealth = maxHealth;
+		playerHealth = GameObject.FindGameObjectWithTag (Tags.player).GetComponent<PlayerHealth>();
+		maxHealth = playerHealth.GetMaxHealth();
+		currentHealth = maxHealth;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		playerHealth = player.GetComponent<PlayerHealth> ().GetCurrentHealth();
-		if (playerHealth > 0) {
+		currentHealth = playerHealth.GetCurrentHealth();
+		if (currentHealth > 0) {
 			// define deltaH proportionally to maxHealth and hbWidth
-			scalar = playerHealth / maxHealth;
+			scalar = currentHealth / maxHealth;
 			print ("Scalar: " + scalar.ToString ());
 			if (scalar != 1) {
 				handleBar (scalar);
@@ -37,7 +34,6 @@ public class HealthBarScript : MonoBehaviour {
 	}
 
 	private void handleBar(float scalar) {
-		
 		content.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scalar * hbWidth);
 		//content.rectTransform.Translate (new Vector3 (-offset, 0, 0));
 	}
