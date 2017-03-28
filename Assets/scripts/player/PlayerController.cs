@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
 				pStamina.UseStamina(cost);
 			}
 			break;
-		case "dvswing":
+		case "dblswing":
 			cost = AtkCost.dblAxeSwing;
 			if (pStamina.HasStamina()) {
 				anim.SetTrigger (hash.dblVertSwingTrig);
